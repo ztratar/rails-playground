@@ -1,6 +1,9 @@
 Airety::Application.routes.draw do
+<<<<<<< HEAD
   resources :profiles
+=======
   resources :chats
+>>>>>>> 25c35f247a98ea39e7e972d7379d8de2fc887188
 
   devise_for :users
 

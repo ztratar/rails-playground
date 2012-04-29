@@ -43,3 +43,5 @@ gem 'less-rails-bootstrap'
 gem "simple-navigation"
 
 gem 'devise'
+
+gem 'opentok'
