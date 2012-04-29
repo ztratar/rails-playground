@@ -1,4 +1,6 @@
 Airety::Application.routes.draw do
+  resources :chats
+
   devise_for :users
 
   # The priority is based upon order of creation:
