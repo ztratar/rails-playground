@@ -13,6 +13,13 @@
 
 ActiveRecord::Schema.define(:version => 20120429024519) do
 
+  create_table "chats", :force => true do |t|
+    t.integer  "event"
+    t.string   "session_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "profiles", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -21,13 +28,6 @@ ActiveRecord::Schema.define(:version => 20120429024519) do
     t.string   "state"
     t.string   "country"
     t.string   "zipcode"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "chats", :force => true do |t|
-    t.integer  "event"
-    t.string   "session_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

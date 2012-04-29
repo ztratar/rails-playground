@@ -45,3 +45,5 @@ gem "simple-navigation"
 gem 'devise'
 
 gem 'opentok'
+
+gem "omniauth-facebook"
