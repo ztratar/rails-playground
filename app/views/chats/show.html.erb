@@ -1,5 +1,14 @@
  <script src="http://staging.tokbox.com/v0.91/js/TB.min.js"></script>
+ <script src="http://js.pusher.com/1.11/pusher.min.js"></script>
+
  <script type="text/javascript" charset="utf-8">
+ var pusher = new Pusher('85cb11eec6f4988bf33d'); // Replace with your app key
+ var channel = pusher.subscribe('<%= @tok_session_id %>');
+
+ channel.bind('my-event', function(data) {
+  alert('An event was triggered with message: ' + data.message);
+});
+
       var apiKey = 14712672;
       var sessionId = "<%= @tok_session_id %>";
       var token = "<%= @tok_token %>";
