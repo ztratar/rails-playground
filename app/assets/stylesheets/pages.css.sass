@@ -1,0 +1,73 @@
+@import "mixins.css.sass"
+
+#primaryContainer
+  width: 900px
+  margin: 50px auto 0
+
+#primaryContainer.nonAuth
+  margin-top: 230px
+
+#header
+  display: block
+  +gradient(#fff,#f7f7f7)
+  height: 50px
+  border-bottom: 1px solid #cfddd6
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04)
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  z-index: 100
+
+  #logo
+    position: absolute
+    left: 50%
+    top: 9px
+    color: #0f9742
+    font-size: 26px
+    margin-left: -36px
+    font-weight: bold
+
+.user-stream
+  display: block
+
+  .user-stream-card
+    width: 210px
+    &:hover
+      .button
+        display: block
+
+    .button
+      position: absolute
+      top: 12px
+      left: 12px
+      width: 128px
+      display: none
+
+.headerPop
+  width: 570px
+  position: fixed
+  top: 51px
+  left: 50%
+  margin-left: -300px
+  text-align: center
+  padding: 30px 14px
+  z-index: 110
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.02)
+
+  h2
+    font-size: 22px
+    font-weight: 500
+    color: #282828
+    margin-bottom: 18px
+
+  p.privacyNotif
+    font-size: 12px
+    color: #888
+    margin-top: 10px
+
+
+.headerPop.whiteCard
+  border-top: none
+  border-top-right-radius: 0
+  border-top-left-radius: 0

@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Air</title>
+  <title>Airety</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
+
 <body>
 
-<%= yield %>
+  <div id="fb-root"></div>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '298742266870365',
+        status     : true, 
+        cookie     : true,
+        xfbml      : true,
+        oauth      : true,
+      });
+    };
+    (function(d){
+       var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+       js = d.createElement('script'); js.id = id; js.async = true;
+       js.src = "//connect.facebook.net/en_US/all.js";
+       d.getElementsByTagName('head')[0].appendChild(js);
+     }(document));
+  </script>
+
+  <div id="header">
+    <h1 id="logo">Airety</h1>
+  </div>
+
+  <div id="primaryContainer" class="nonAuth">
+    <%= yield %>
+  </div>
 
 </body>
+
 </html>
