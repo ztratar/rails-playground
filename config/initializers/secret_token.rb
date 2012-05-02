@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Airety::Application.config.secret_token = 'b3e49026c2055c82318c202b0600a8bed39f8a3a9bee5c8881dcb40d89145939aee5219b31666ef3b9b0dcc03d35f9c8cc4a632f2d9c2cff0dba3335ea55ee9b'
+Air::Application.config.secret_token = 'ebd649f3edf61b75e6ec9a8cff5e77a934abdc2dc0bd804d4dfe6d1a7fcfd5921198574b2faa10593aeca5642bb2af2c2b05f0fcb30d5b1d08e90dff9fee2957'

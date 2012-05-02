@@ -2,7 +2,7 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   require "omniauth-facebook"
-  config.omniauth :facebook, "298742266870365", "298742266870365"
+  config.omniauth :facebook, "298742266870365", "298742266870365", { :display => 'popup' }
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.
@@ -18,7 +18,7 @@ Devise.setup do |config|
   # Load and configure the ORM. Supports :active_record (default) and
   # :mongoid (bson_ext recommended) by default. Other ORMs may be
   # available as additional gems.
-  require 'devise/orm/active_record'
+  require 'devise/orm/mongoid'
 
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating a user. The default is
@@ -87,7 +87,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 10
 
   # Setup a pepper to generate the encrypted password.
-  # config.pepper = "01a9919c75b1c1773cf564fa5e1ae88aeb9356d04ef0ce9657afb4e3207ce7643d07214bf078f04ceb098a1a78e67334206e06aa563aac275a2f327334463cf6"
+  # config.pepper = "8074c5dbe637d2c4c28a3e8f2d7916f5445c769d5f038783f9752f4bb19ee46c83b0d62553b01092a409a3187094eca0d647ed8a9a85cd4567fa6d9e81666a37"
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without

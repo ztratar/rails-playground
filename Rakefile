@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Airety::Application.load_tasks
+Air::Application.load_tasks
