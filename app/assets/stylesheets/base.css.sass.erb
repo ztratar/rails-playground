@@ -10,6 +10,28 @@ body, html
   background: url(<%= asset_path "bg.png" %>) repeat
   -webkit-font-smoothing: antialiased
 
+html.theaterMode
+  body
+    overflow: hidden
+  #dialog-bg
+    display: block
+
+#dialog-bg
+  display: none
+  position: fixed
+  background: rgba(210,210,210,.8)
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  z-index: 1000
+
+#dialog-container
+  overflow-x: hidden
+  overflow-y: scroll
+  display: block
+  max-height: 100%
+
 .button
   +gradient(#f0f5f3,#e9eeec)
   display: inline-block

@@ -205,13 +205,45 @@ $(function() {
 
 		template: $("#userCardView-template").html(),
 
-		init: function() {
+		events: {
+			'click a': 'openSchedule'
+		},
+
+		init: function(options) {
+			this.extended = options.extended || false;
 			this.model.on('change', this.render, this);
 			this.model.on('destroy', this.remove, this);
 		},
 
 		render: function() {
 			this.$el.html(Mustache.render(this.template, this.model.toJSON()));
+			return this;
+		},
+
+		openSchedule: function() {
+			console.log('test');
+			var view = new 	airetyApp.view.scheduleChatDialogView({
+				model: this.model
+			});
+			window.airety.app.showView('#dialog-container', view, { render: true });
+		}
+	});
+
+	airetyApp.view.scheduleChatDialogView = airetyApp.view.baseView.extend({
+	
+		template: $("#scheduleChatDialogView-template").html(),
+
+		init: function() {
+		},
+
+		render: function() {
+			$("html").addClass('theaterMode');
+			this.$el.html(Mustache.render(this.template, this.model.toJSON()));
+			this.cardView = new airetyApp.view.userCardView({
+				model: this.model,
+				extended: true
+			});
+			this.showView('.card-column', this.cardView, { render: true });
 			return this;
 		}
 	
