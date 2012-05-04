@@ -21,7 +21,7 @@ $(function(){
 				});
 				this.homeView.showView('.stream-container', this.userStreamView);
 				this.userStreamView.setUp();
-				for(var i = 0; i < 40; i++){
+				for(var i = 0; i < 30; i++){
 					this.userStream.add({ 
 						name: 'Zach Tratar',
 						picture: {

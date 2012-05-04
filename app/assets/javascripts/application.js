@@ -16,6 +16,7 @@
 //= require ./lib/json2.js
 //= require ./lib/mustache.js
 //= require ./lib/backbone.js
+//= require ./lib/lazyload.js
 //= require ./init.js
 //= require_tree ./backbone/
 //= require ./run.js

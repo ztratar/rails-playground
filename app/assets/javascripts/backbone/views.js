@@ -151,6 +151,7 @@ $(function() {
 			this.collection.each(function(user){
 				that.addOne(user)
 			});
+			var scrollTop = $(window).scrollTop();
 		},
 
 		addOne: function(user) {
@@ -184,6 +185,12 @@ $(function() {
 				this.bottom = this.columns[shortestIndex];
 				this.$el.height(this.bottom);
 			}
+
+			view.$("img.lazy").lazyload({
+				effect: 'fadeIn',
+				threshold: 800
+			});
+
 		},
 
 		infScroll: function() {
