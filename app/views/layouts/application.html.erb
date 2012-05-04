@@ -29,13 +29,71 @@
   </script>
 
   <div id="header">
-    <h1 id="logo">Airety</h1>
+    <div id="innerHeader">
+      <h1 id="logo">Airety</h1>
+      <div id="dropdown-container"></div>
+    </div>
   </div>
 
-  <div id="primaryContainer" class="nonAuth">
-    <%= yield %>
-  </div>
+  <div id="primaryContainer" class="nonAuth"></div>
 
 </body>
 
 </html>
+
+<script id="headerDropdown-template" type="text/template">
+  <a href="#" class="dropdownTrigger">
+    <img class="avatar" src="{{picture.src}}">
+    <h4>{{name}}</h4>
+  </a>
+  <ul class="dropdown">
+    <li>
+      <a href="/editprofile">Edit profile</a>
+    </li>
+    <li>
+      <a href="/signout">Sign out</a>
+    </li>
+  </ul>
+</script>
+
+<script id="homeView-template" type="text/template">
+  <div class="top-container"></div>
+  <div class="stream-container"></div>
+</script>
+
+<script id="registrationView-template" type="text/template">
+  <div class="whiteCard headerPop">
+    <h2>Learn from others through scheduled video chats</h2>
+    <div class="fb-login-button">Login with Facebook</div>
+    <p class="privacyNotif">We will never, ever violate your privacy.</p>
+  </div>
+</script>
+
+<script id="userCardView-template" type="text/template">
+  <div class="whiteCard onStream">
+    <div class="imgContainer">
+      <a href="#" class="button darkShadow">Schedule a chat</a>
+      <img src="{{picture.src}}" width="{{picture.width}}" height="{{picture.height}}">
+      <h3 class="name">Zach Tratar</h3>
+    </div>
+    <p class="userDescription">
+      I want to help midwestern entrepreneurs gain insight of what life is like in Silicon Valley.
+    </p>
+  </div>
+  <ul class="darkCard compressSides">
+    <li class="listItem">
+      <img src="">
+      <div class="withImage">
+        <h4 class="title">Backplane</h4>
+        <p class="description">Product Engineer</p>
+      </div>
+    </li> 
+    <li class="listItem">
+      <img src="">
+      <div class="withImage">
+        <h4 class="title">Backplane</h4>
+        <p class="description">Product Engineer</p>
+      </div>
+    </li> 
+  </ul>
+</script>

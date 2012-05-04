@@ -14,5 +14,8 @@
 //= require jquery_ujs
 //= require ./lib/underscore.js
 //= require ./lib/json2.js
+//= require ./lib/mustache.js
 //= require ./lib/backbone.js
-//= require_tree .
+//= require ./init.js
+//= require_tree ./backbone/
+//= require ./run.js

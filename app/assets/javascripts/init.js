@@ -7,29 +7,3 @@ airetyApp.collection = airetyApp.collection || {};
 airetyApp.view = airetyApp.view || {};
 
 
-
-$(function(){
-
-	/********* ROUTER *********/
-
-	airetyApp.router.primary = Backbone.Router.extend({
-			
-			routes: {
-				'': 'index'
-			},
-
-			index: function() {
-			}
-
-	});
-
-	airety.run = function() {
-		airety.route = new airetyApp.router.primary;	
-		Backbone.history.start({ pushState: true });
-	};
-	
-	/* initialize application */
-	
-	airety.run();
-
-});
