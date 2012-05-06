@@ -1,7 +1,7 @@
 class Chat
   include Mongoid::Document
 
-  field :request_id, :type => Integer
+  field :request_id, :type => String
   field :session_id, :type => String
   field :messages, :type => Array
 

@@ -5,6 +5,10 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
+
+  has_many :sent_requests, :dependent => :destroy, :foreign_key => "requester_id", :class_name => "Request"
+  has_many :received_requests, :dependent => :destroy, :foreign_key => "host_id", :class_name => "Request"
+
   ## Database authenticatable
   field :email,              :type => String, :null => false, :default => ""
   field :encrypted_password, :type => String, :null => false, :default => ""
@@ -32,6 +36,8 @@ class User
   field :locations => Array
   field :workplaces => Array
   field :schools => Array
+
+  field :is_host => Boolean
 
   ## Encryptable
   # field :password_salt, :type => String
