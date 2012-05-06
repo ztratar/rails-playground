@@ -22,22 +22,16 @@ class User
   field :last_sign_in_at,    :type => Time
   field :current_sign_in_ip, :type => String
   field :last_sign_in_ip,    :type => String
+  field :chats_scheduled,    :type => Array
 
   ## personal info
   field :first_name, :type => String
   field :last_name, :type => String
+  field :about, :type => String
 
-  embeds_one  :locations
-  validates_associated :locations
-  accepts_nested_attributes_for :locations
-
-  embeds_one  :workplaces
-  validates_associated :workplaces
-  accepts_nested_attributes_for :workplaces
-
-  embeds_one  :schools
-  validates_associated :schools
-  accepts_nested_attributes_for :schools
+  field :locations => Array
+  field :workplaces => Array
+  field :schools => Array
 
   ## Encryptable
   # field :password_salt, :type => String
