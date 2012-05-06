@@ -1,12 +1,5 @@
 class ChatsController < ApplicationController
 
-  def config_opentok
-    if @opentok.nil?
-      @opentok = OpenTok::OpenTokSDK.new 14712672, "3da704cbbda26bb38e50d430d0fecfd7ffc0269f"
-      @opentok.api_url = 'https://staging.tokbox.com/hl'
-    end
-  end
-
   # GET /chats
   # GET /chats.json
   def index
@@ -23,18 +16,8 @@ class ChatsController < ApplicationController
   def show
     @chat = Chat.find(params[:id])
 
-
-    config_opentok
-    if @chat.session_id.empty?
-      id = @opentok.create_session '127.0.0.1'
-      tok_session = id.to_s
-      @tok_session_id = tok_session
-      @chat.session_id = tok_session
-      @chat.save
-    else
-      @tok_session_id = @chat.session_id
-    end
-    @tok_token = @opentok.generate_token :session_id => @tok_session_id
+    @chat = Chat.init_session(@chat)
+    @tok_token = Chat.gen_token(@chat)
 
 
     respond_to do |format|

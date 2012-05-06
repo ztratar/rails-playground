@@ -11,7 +11,7 @@
 
 <% @chats.each do |chat| %>
   <tr>
-    <td><%= chat.event %></td>
+    <td><%= chat.request_id %></td>
     <td><%= chat.session_id %></td>
     <td><%= link_to 'Show', chat %></td>
     <td><%= link_to 'Edit', edit_chat_path(chat) %></td>
