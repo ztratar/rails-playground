@@ -1,0 +1,33 @@
+<h1>Listing requests</h1>
+
+<table>
+  <tr>
+    <th>Requester</th>
+    <th>Host</th>
+    <th>Requester confirmation</th>
+    <th>Host confirmation</th>
+    <th>Latest message</th>
+    <th>Ping pong</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @requests.each do |request| %>
+  <tr>
+    <td><%= request.requester_id %></td>
+    <td><%= request.host_id %></td>
+    <td><%= request.requester_confirmation %></td>
+    <td><%= request.host_confirmation %></td>
+    <td><%= request.latest_message %></td>
+    <td><%= request.ping_pong %></td>
+    <td><%= link_to 'Show', request %></td>
+    <td><%= link_to 'Edit', edit_request_path(request) %></td>
+    <td><%= link_to 'Destroy', request, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Request', new_request_path %>

@@ -1,0 +1,41 @@
+<%= form_for(@request) do |f| %>
+  <% if @request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@request.errors.count, "error") %> prohibited this request from being saved:</h2>
+
+      <ul>
+      <% @request.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :requester_id %><br />
+    <%= f.number_field :requester_id %>
+  </div>
+  <div class="field">
+    <%= f.label :host_id %><br />
+    <%= f.number_field :host_id %>
+  </div>
+  <div class="field">
+    <%= f.label :requester_confirmation %><br />
+    <%= f.check_box :requester_confirmation %>
+  </div>
+  <div class="field">
+    <%= f.label :host_confirmation %><br />
+    <%= f.check_box :host_confirmation %>
+  </div>
+  <div class="field">
+    <%= f.label :latest_message %><br />
+    <%= f.text_field :latest_message %>
+  </div>
+  <div class="field">
+    <%= f.label :ping_pong %><br />
+    <%= f.number_field :ping_pong %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

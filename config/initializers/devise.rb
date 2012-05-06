@@ -2,7 +2,7 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   require "omniauth-facebook"
-  config.omniauth :facebook, "298742266870365", "298742266870365", { :display => 'popup' }
+  config.omniauth :facebook, "298742266870365", "0df78b21da23da10cd955091b150f643"
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.

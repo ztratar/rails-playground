@@ -27,10 +27,17 @@ class User
   field :first_name, :type => String
   field :last_name, :type => String
 
-  ## array based bullshit
-  field :locations, :type => Hash
-  field :workplaces, :type => Hash
-  field :schools, :type => Hash
+  embeds_one  :locations
+  validates_associated :locations
+  accepts_nested_attributes_for :locations
+
+  embeds_one  :workplaces
+  validates_associated :workplaces
+  accepts_nested_attributes_for :workplaces
+
+  embeds_one  :schools
+  validates_associated :schools
+  accepts_nested_attributes_for :schools
 
   ## Encryptable
   # field :password_salt, :type => String
@@ -49,14 +56,22 @@ class User
   ## Token authenticatable
   # field :authentication_token, :type => String
 
-  def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
-    data = access_token.extra.raw_info
-    if user = self.find_by_email(data.email)
-      user
-    else # Create a user with a stub password. 
-      self.create!(:email => data.email, :password => Devise.friendly_token[0,20]) 
+def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
+  data = access_token.extra.raw_info
+  if user = User.where(:email => data.email).first
+    user
+  else # Create a user with a stub password. 
+    User.create!(:email => data.email, :password => Devise.friendly_token[0,20]) 
+  end
+end
+
+def self.new_with_session(params, session)
+  super.tap do |user|
+    if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
+      user.email = data["email"]
     end
   end
+end
 
 
 end

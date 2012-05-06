@@ -41,6 +41,16 @@
 
   <div id="primaryContainer" class="nonAuth"></div>
 
+
+                <div style="margin:20px">
+                <% flash.each do |key, value| %>
+                <div class="flash <%= key %>"><%= value %></div>
+                <% end %>
+                </div>
+
+                <%= yield %>
+
+
 </body>
 
 </html>
@@ -55,7 +65,7 @@
       <a href="/editprofile">Edit profile</a>
     </li>
     <li>
-      <a href="/signout">Sign out</a>
+      <a href="/users/sign_out" data-method="delete">Sign out</a>
     </li>
   </ul>
 </script>

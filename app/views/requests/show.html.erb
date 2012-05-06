@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Requester:</b>
+  <%= @request.requester_id %>
+</p>
+
+<p>
+  <b>Host:</b>
+  <%= @request.host_id %>
+</p>
+
+<p>
+  <b>Requester confirmation:</b>
+  <%= @request.requester_confirmation %>
+</p>
+
+<p>
+  <b>Host confirmation:</b>
+  <%= @request.host_confirmation %>
+</p>
+
+<p>
+  <b>Latest message:</b>
+  <%= @request.latest_message %>
+</p>
+
+<p>
+  <b>Ping pong:</b>
+  <%= @request.ping_pong %>
+</p>
+
+
+<%= link_to 'Edit', edit_request_path(@request) %> |
+<%= link_to 'Back', requests_path %>

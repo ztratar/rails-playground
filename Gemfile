@@ -49,5 +49,3 @@ gem "omniauth-facebook"
 
 gem "bson_ext"
 gem "mongoid"
-
-gem "omniauth-facebook"
