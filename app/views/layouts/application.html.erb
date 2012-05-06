@@ -28,7 +28,7 @@
      }(document));
    </script>
 
-   <div id="dialog-bg">
+   <div id="dialog">
      <div id="dialog-container"></div>
    </div>
 
@@ -86,9 +86,11 @@
 <script id="userCardView-template" type="text/template">
   <div class="whiteCard onStream">
     <div class="imgContainer">
+      {{^extended}}
       <a href="#" class="button darkShadow">Schedule a chat</a>
-      <img class="lazy" src="<%= asset_path 'grey.gif' %>" data-original="{{picture.src}}" width="{{picture.width}}" height="{{picture.height}}">
-      <h3 class="name">Zach Tratar</h3>
+      {{/extended}}
+      <img class="lazy" src="<%= asset_path 'grey.gif' %>" data-original="{{model.picture.src}}" width="{{model.picture.width}}" height="{{model.picture.height}}">
+      <h3 class="name">{{model.name}}</h3>
     </div>
     <p class="userDescription">
       I want to help midwestern entrepreneurs gain insight of what life is like in Silicon Valley.
@@ -117,15 +119,22 @@
   <div class="schedule-column whiteCard">
     <h3>Zach is probably free at the following times:</h3>
     <p>Pick all of the times that work for you. Zach will confirm one.</p>
-    <ul class="scheduleSlots">
-      <li>
-        <input name="slot" type="checkbox">
-        <span class="day">Monday, April 21st</span>
-        <span class="time">9:00PM</span>
-      </li>
-    </ul>
-    <div class="textAreaWrap">
-      <textarea name="why" placeholder="Why do you want to talk to Zach?"></textarea>
-    </div>
+    <form id="schedule-slots-form">
+      <ul class="scheduleSlots">
+        <li>
+          <span class="checkboxContainer">
+            <input name="slot" type="checkbox">
+          </span>
+          <span class="day">Monday, April 21st</span>
+          <span class="time">9:00PM</span>
+        </li>
+      </ul>
+      <div class="textAreaWrap">
+        <textarea name="why" placeholder="Why do you want to talk to Zach?"></textarea>
+      </div>
+      <div>
+        <a class="button">Send chat request</a>
+      </div>
+    </form>
   </div>
 </script>
