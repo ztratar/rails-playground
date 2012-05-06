@@ -27,17 +27,9 @@ class User
   field :first_name, :type => String
   field :last_name, :type => String
 
-  embeds_one  :locations
-  validates_associated :locations
-  accepts_nested_attributes_for :locations
-
-  embeds_one  :workplaces
-  validates_associated :workplaces
-  accepts_nested_attributes_for :workplaces
-
-  embeds_one  :schools
-  validates_associated :schools
-  accepts_nested_attributes_for :schools
+  field :locations => Array
+  field :workplaces => Array
+  field :schools => Array
 
   ## Encryptable
   # field :password_salt, :type => String
