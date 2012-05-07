@@ -5,6 +5,8 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
+  embeds_many :availability
+  
   ## Database authenticatable
   field :email,              :type => String, :null => false, :default => ""
   field :encrypted_password, :type => String, :null => false, :default => ""
@@ -29,9 +31,9 @@ class User
   field :last_name, :type => String
   field :about, :type => String
 
-  field :locations => Array
-  field :workplaces => Array
-  field :schools => Array
+  field :locations, :type => Array
+  field :workplaces, :type => Array
+  field :schools, :type => Array
 
   ## Encryptable
   # field :password_salt, :type => String
