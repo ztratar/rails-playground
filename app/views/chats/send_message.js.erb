@@ -1,0 +1,6 @@
+<% 
+chat_id = @chat.id.to_s
+broadcast("/" + chat_id) do %>
+  $("#chat").append("<%= params[:chat][:message][:content] %>");
+<% end %>
+$("#new_message")[0].reset();

@@ -5,6 +5,8 @@ class Chat
   field :session_id, :type => String
   field :messages, :type => Array
 
+  embeds_many :messages
+
   belongs_to :request
 
 
@@ -38,4 +40,12 @@ class Chat
 
   end
 
+end
+
+
+class Message
+  include Mongoid::Document
+  field :content, type: String
+  field :user_id, type: String
+  embedded_in :chat
 end

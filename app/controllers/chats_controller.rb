@@ -85,4 +85,21 @@ class ChatsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
+  def send_message
+    @chat = Chat.find(params[:id])
+    @chat.messages.new(:content => params[:chat][:message][:content], :user_id => current_user.id)
+
+    respond_to do |format|
+      if @chat.save
+        format.js
+      else
+        
+      end
+
+    end
+  end
+
+
 end

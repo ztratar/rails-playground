@@ -56,6 +56,22 @@
   </script>
 
 
-<a href="#" onclick="client.publish('/<%= @chat.id %>', {text: 'Hi there'});">Click me</a>
-
 <div id="myPublisherDiv"></div>
+
+
+<div id="chat">
+<% @chat.messages.each do |message| %>
+  <%= message.content %><br />
+<% end %>
+</div>
+
+
+<%= form_for [@chat], :url => url_for(:controller => 'chats', :action => 'send_message'), :remote => true do |f| %>
+  <%= f.fields_for :message  do |builder| %>
+
+    <%= builder.text_field :content %>
+    <%= f.submit "Submit" %>
+
+  <% end %>
+
+<% end %>
