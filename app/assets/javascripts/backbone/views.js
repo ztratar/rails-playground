@@ -16,7 +16,8 @@ $(function() {
 
 		showView: function(selector, view, options) {
 			if (this.currentView && this.currentView[selector] && view != this.currentView[selector]) {
-				this.currentView.close();
+				this.currentView[selector].close();
+				this.currentView[selector] = false;
 			}
 			this.currentView[selector] = view;
 			this.$(selector).html(this.currentView[selector].$el);
@@ -43,6 +44,10 @@ $(function() {
 	
 		el: $('body'),
 
+		events: {
+			'click #dialog-container': 'closeDialog'
+		},
+
 		init: function() {
 			this.model = new airetyApp.model.user();
 			this.headerView = new airetyApp.view.headerView({
@@ -55,6 +60,24 @@ $(function() {
 					src: 'http://localhost:3000/assets/zach.png'
 				}
 			});
+		},
+
+		showDialog: function(view, options) {
+			$('html').addClass('theaterMode');
+			this.showView('#dialog-container', view, options);
+		},
+
+		closeDialog: function(e) {
+			if(e && e.target){
+				if (e.target.id !== 'dialog-container'){
+					return false;
+				}
+			}
+			if (this.currentView['#dialog-container']) {
+				this.currentView['#dialog-container'].close();
+				this.currentView['#dialog-container'] = false;
+			}
+			$('html').removeClass('theaterMode');
 		}
 
 	});
@@ -216,16 +239,22 @@ $(function() {
 		},
 
 		render: function() {
-			this.$el.html(Mustache.render(this.template, this.model.toJSON()));
+			var templateVariables = {
+				extended: this.extended,
+				model: this.model.toJSON()
+			};
+			this.$el.html(Mustache.render(this.template, templateVariables));
+			if (this.extended) {
+				this.$("img.lazy").lazyload();
+			}
 			return this;
 		},
 
 		openSchedule: function() {
-			console.log('test');
 			var view = new 	airetyApp.view.scheduleChatDialogView({
 				model: this.model
 			});
-			window.airety.app.showView('#dialog-container', view, { render: true });
+			window.airety.app.showDialog(view, { render: true });
 		}
 	});
 
@@ -233,11 +262,12 @@ $(function() {
 	
 		template: $("#scheduleChatDialogView-template").html(),
 
+		className: 'schedule-chat-dialog-view',
+
 		init: function() {
 		},
 
 		render: function() {
-			$("html").addClass('theaterMode');
 			this.$el.html(Mustache.render(this.template, this.model.toJSON()));
 			this.cardView = new airetyApp.view.userCardView({
 				model: this.model,

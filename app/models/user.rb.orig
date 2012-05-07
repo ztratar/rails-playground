@@ -5,12 +5,15 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
+<<<<<<< HEAD
   embeds_many :availability
+  
+=======
 
   has_many :sent_requests, :dependent => :destroy, :foreign_key => "requester_id", :class_name => "Request"
   has_many :received_requests, :dependent => :destroy, :foreign_key => "host_id", :class_name => "Request"
 
-  
+>>>>>>> 7637a0d7a5753a17d8dccb67aaf19d5c29be3c4b
   ## Database authenticatable
   field :email,              :type => String, :null => false, :default => ""
   field :encrypted_password, :type => String, :null => false, :default => ""
