@@ -20,7 +20,7 @@ class Chat
 
 	  def init_session(chat)
 	      @opentok = init_opentok
-	      if chat.session_id.empty?
+	      if chat.session_id.nil?
 		      id = @opentok.create_session '127.0.0.1'
 		      tok_session = id.to_s
 		      chat.session_id = tok_session

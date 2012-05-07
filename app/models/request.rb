@@ -10,5 +10,25 @@ class Request
   field :reqtimes, :type => Array
 
   belongs_to :user
-  has_one :chat
+  has_one :chat, :dependent => :destroy, :foreign_key => "request_id", :class_name => "Chat"
+
+
+
+  def set_chat
+    if self.host_confirmation && self.requester_confirmation && chat.nil?
+      spawn = Chat.create(:request_id => self.id)
+      spawn.save
+    end
+  end
+
+
+  def has_chat?
+    if !chat.nil?
+      return true
+    else
+      return false
+    end
+  end
+
+
 end
