@@ -14,6 +14,10 @@ $(function(){
 		urlRoot: '/users'
 	});
 
+	airetyApp.model.chat = airetyApp.model.baseModel.extend({
+		urlRoot: '/chats'
+	});
+
 	
 	/* collections */
 
@@ -52,6 +56,10 @@ $(function(){
 
 	airetyApp.collection.users = airetyApp.collection.baseCollection.extend({
 		model: airetyApp.model.user
+	});
+
+	airetyApp.collection.chats = airetyApp.collection.baseCollection.extend({
+		model: airetyApp.model.chat
 	});
 
 });

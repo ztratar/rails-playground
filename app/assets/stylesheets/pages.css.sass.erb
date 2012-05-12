@@ -1,0 +1,301 @@
+@import "mixins.css.sass"
+
+#primaryContainer
+  width: 900px
+  margin: 230px auto 0
+
+#primaryContainer.authed
+  margin-top: 75px
+
+#primaryContainer.authed.chatsToday
+  margin-top: 145px
+
+#header
+  display: block
+  +gradient(#fff,#f7f7f7)
+  height: 50px
+  border-bottom: 1px solid #cfddd6
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04)
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  z-index: 100
+
+  a.greenButton
+    margin-top: 7px
+    &:active
+      margin-top: 8px
+
+
+  #innerHeader
+    width: 900px
+    margin: 0 auto
+    position: relative
+
+    #dropdown-container
+      position: absolute
+      right: 0
+      top: 0
+      border-left: 1px solid #e6e6e6
+      border-right: 1px solid #e6e6e6
+      border-bottom: none
+      box-shadow: inset 1px 0 0 #fff
+      z-index: 300
+      &:hover
+        background: #fff
+        border: 1px solid #ccc
+        border-bottom: 1px solid #c6c6c6
+        border-top: none
+        border-radius: 0 0 5px 5px
+        box-shadow: 0 1px 2px rgba(0,0,0,.1)
+        ul.dropdown
+          display: block
+
+      a.dropdownTrigger
+        height: 50px
+        position: relative
+        text-decoration: none
+        display: block
+        &:hover
+          background: #f9f9f9
+
+        img.avatar
+          width: 24px
+          height: 24px
+          border-radius: 3px
+          position: absolute
+          top: 13px
+          left: 13px
+
+        h4
+          height: 16px
+          padding: 17px 30px 17px 50px
+          text-decoration: none
+          font-weight: 500
+          font-size: 15px
+          color: #444
+
+      ul.dropdown
+        display: none
+
+        li
+          display: block
+
+          a
+            display: block
+            padding: 9px
+            border-top: 1px solid #eee
+            text-decoration: none
+            color: #444
+            cursor: pointer
+            &:hover
+              background: #f9f9f9
+
+  #logo
+    position: absolute
+    left: 50%
+    top: 9px
+    color: #0f9742
+    font-size: 26px
+    margin-left: -36px
+    font-weight: bold
+
+.user-stream
+  display: block
+  position: relative
+
+.user-stream-card
+  width: 210px
+  &:hover
+    .button
+      display: block
+
+  .button
+    position: absolute
+    top: 12px
+    left: 12px
+    width: 128px
+    display: none
+
+.headerPop
+  width: 560px
+  position: absolute
+  top: 51px
+  left: 50%
+  margin-left: -300px
+  text-align: center
+  padding: 30px 14px
+  z-index: 110
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.02)
+
+  h2
+    font-size: 22px
+    font-weight: 500
+    color: #282828
+    margin-bottom: 18px
+
+  p.privacyNotif
+    font-size: 12px
+    color: #888
+    margin-top: 10px
+
+  a.logInWithFacebook
+    width: 181px
+    height: 26px
+    background: url(<%= asset_path "loginWithFacebook.png" %>)
+    display: inline-block
+    text-indent: -9999px
+    cursor: hand
+    &:hover
+      opacity: .93
+    &:active
+      margin: 1px 0 -1px 0
+
+
+.headerPop.whiteCard, .chatHeaderPop.whiteCard
+  border-top: none
+  border-top-right-radius: 0
+  border-top-left-radius: 0
+
+.chatHeaderPop
+  left: 50%
+  top: 51px
+  position: absolute
+  margin: 0
+  padding: 11px 18px
+  z-index: 110
+  box-shadow: inset 0 4px 8px rgba(0,0,0, 0.02)
+
+  img
+    width: 54px
+    height: 54px
+    border: 1px solid #8d928f
+    float: left
+
+  div
+    float: left
+
+  div.info
+    padding: 0 20px 0 15px
+
+    span
+      display: block
+      font-size: 11px
+
+    span.timer
+      font-size: 22px
+      font-weight: 600
+      color: #0f9742
+      margin: 5px 0 3px 0
+
+    span.sub-time
+      color: #777
+
+  a.button
+    margin-top: 11px
+      
+
+.host-chats-dialog-view
+  width: 645px
+  margin: 30px auto
+  padding: 0
+  position: relative
+
+  .whiteCard
+    padding: 0
+
+  img
+    position: absolute
+    left: 45px
+    top: 30px
+    height: 74px
+    width: 74px
+    border: 1px solid #85908a
+    border-radius: 4px
+
+  div.host-chats-info
+    padding: 30px 40px 0 140px
+
+    h3
+      font-size: 22px
+      margin-bottom: 21px
+
+      strong
+        font-weight: bold
+        color: #1ba362
+
+    p.avg-week
+      font-size: 21px
+      color: #47504b
+      margin-bottom: 14px
+
+      span
+        font-style: italic
+
+    p.no-worries
+      font-size: 15px
+      color: #767e79
+      margin-bottom: 22px
+
+  table
+    border-top: 1px solid #e9efec
+    border-bottom: 1px solid #e9efec
+    width: 100%
+
+    tr.host-chats-table-row
+
+      td
+        height: 15px
+        padding: 9px 0
+        text-align: center
+        width: 78px
+        font-size: 13px
+        color: #888
+
+    tr
+      border-bottom: 1px solid #e9efec
+
+      td
+        border-right: 1px solid #e9efec
+
+      td:last-child
+        border-right: none
+
+      td.checkable
+        cursor: pointer
+        opacity: .3
+        &:hover
+          background: url(<%= asset_path "calendarCheck.png" %>) center center no-repeat
+
+        input
+          display: none
+
+      td.checked
+        opacity: 1
+        background: url(<%= asset_path "calendarCheck.png" %>) center center no-repeat
+
+      span
+        font-size: 11px
+        display: block
+        width: 83px
+        padding: 0 0 13px 13px
+        margin: 0
+        float: left
+        clear: both
+        color: #888
+
+      span.big
+        font-size: 13px
+        font-weight: 500
+        padding: 13px 0 4px 13px
+        color: #66756d
+
+    tr:last-child
+      border-bottom: none
+
+  div.buttonCenter
+    text-align: center
+
+    a.button
+      margin: 15px 0 15px

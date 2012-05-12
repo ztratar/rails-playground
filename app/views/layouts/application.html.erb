@@ -27,6 +27,15 @@
        d.getElementsByTagName('head')[0].appendChild(js);
      }(document));
    </script>
+   <script>
+     	window.airety.currentUser = {
+				id: 1,
+				name: 'Zach Tratar',
+				picture: {
+					src: 'http://localhost:3000/assets/zach.png'
+				}
+			};
+   </script>
 
    <div id="dialog">
      <div id="dialog-container"></div>
@@ -34,12 +43,13 @@
 
   <div id="header">
     <div id="innerHeader">
+      <div id="hostButton-container"></div>
       <h1 id="logo">Airety</h1>
       <div id="dropdown-container"></div>
     </div>
   </div>
 
-  <div id="primaryContainer" class="nonAuth"></div>
+  <div id="primaryContainer" class=""></div>
 
 
                 <div style="margin:20px">
@@ -70,6 +80,10 @@
   </ul>
 </script>
 
+<script id="hostButton-template" type="text/template">
+  <a href="#" id="hostButton" class="button greenButton">Host chats</a>
+</script>
+
 <script id="homeView-template" type="text/template">
   <div class="top-container"></div>
   <div class="stream-container"></div>
@@ -78,8 +92,27 @@
 <script id="registrationView-template" type="text/template">
   <div class="whiteCard headerPop">
     <h2>Learn from others through scheduled video chats</h2>
-    <div class="fb-login-button">Login with Facebook</div>
-    <p class="privacyNotif">We will never, ever violate your privacy.</p>
+    <a class="logInWithFacebook" href="#">Log in with facebook</a>
+    <p class="privacyNotif">We will help you find people to talk to based on your interests. <br />We will never, ever violate your privacy.</p>
+  </div>
+</script>
+
+<script id="chatsTodayView-template" type="text/template">
+  <div class="whiteCard chatHeaderPop">
+    <ul>
+    </ul>
+  </div>
+</script>
+
+<script id="chatsTodayItemView-template" type="text/template">
+  <img src="<%= asset_path "zach.png" %>">
+  <div class="info">
+    <span>You have a chat with Zach in:</span>
+    <span class="timer">2 hrs, 36 mins</span>
+    <span class="sub-time">(that's 7:00PM)</span>
+  </div>
+  <div class="buttonCol">
+    <a href="#" class="button">Enter Room</a>
   </div>
 </script>
 
@@ -127,7 +160,15 @@
           </span>
           <span class="day">Monday, April 21st</span>
           <span class="time">9:00PM</span>
+          </li>
+        <li>
+          <span class="checkboxContainer">
+            <input name="slot" type="checkbox">
+          </span>
+          <span class="day">Tuesday, April 22nd</span>
+          <span class="time">10:00PM</span>
         </li>
+
       </ul>
       <div class="textAreaWrap">
         <textarea name="why" placeholder="Why do you want to talk to Zach?"></textarea>
@@ -136,5 +177,31 @@
         <a class="button">Send chat request</a>
       </div>
     </form>
+  </div>
+</script>
+
+<script id="hostChatsDialogView-template" type="text/template">
+  <div class="whiteCard">
+    <div class="host-chats-info">
+      <img src="<%= asset_path "zach.png" %>">
+      <h3><strong>You're awesome.</strong> Thanks for helping others.</h3>
+      <p class="avg-week">Simply tell us when you'd prefer to chat on an <span>average week</span>.</p>
+      <p class="no-worries">Don't worry. You're not making any promises. When others suggest times to chat, you will be able to confirm specifics then.</p>
+    </div>
+    <table class="host-chats-table">
+        <tr class="host-chats-table-row small">
+          <td></td>
+          <td>Monday</td>
+          <td>Tuesday</td>
+          <td>Wednesday</td>
+          <td>Thursday</td>
+          <td>Friday</td>
+          <td>Saturday</td>
+          <td>Sunday</td>
+      </tr>
+    </table>
+    <div class="buttonCenter">
+      <a class="button">Done!</a>
+    </div>
   </div>
 </script>

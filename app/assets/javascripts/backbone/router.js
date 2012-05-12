@@ -11,9 +11,18 @@ $(function(){
 			index: function() {
 				this.homeView = new airetyApp.view.homeView();
 				window.airety.app.showView('#primaryContainer', this.homeView, { render: true });
-
-				this.registrationView = new airetyApp.view.registrationView();
-				this.homeView.showView('.top-container', this.registrationView, { render: true });
+				
+				if ( !window.airety.app.model.get('id') ) {
+					this.registrationView = new airetyApp.view.registrationView();
+					this.homeView.showView('.top-container', this.registrationView, { render: true });
+				} else {
+					$("#primaryContainer").addClass('authed');
+					this.chatsToday = new airetyApp.collection.chats();
+					this.chatsTodayView = new airetyApp.view.chatsTodayView({
+						collection: this.chatsToday
+					});
+					this.homeView.showView('.top-container', this.chatsTodayView, { render: true });
+				}
 
 				this.userStream = new airetyApp.collection.users();
 				this.userStreamView = new airetyApp.view.streamView({

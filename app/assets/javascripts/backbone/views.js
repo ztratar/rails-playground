@@ -53,13 +53,12 @@ $(function() {
 			this.headerView = new airetyApp.view.headerView({
 				model: this.model
 			});
-			this.model.set({
-				id: 1,
-				name: 'Zach Tratar',
-				picture: {
-					src: 'http://localhost:3000/assets/zach.png'
-				}
-			});
+			if ( window.airety.currentUser ){
+				// User is authed with Facebook and logged in
+				this.model.set(window.airety.currentUser);
+			} else {
+				// User not logged
+			}
 		},
 
 		showDialog: function(view, options) {
@@ -86,13 +85,28 @@ $(function() {
 	
 		el: $('#header'),
 
-		init: function(options) {
-			this.model.bind('change', this.renderDropdown, this);
-			this.dropdownTemplate = $("#headerDropdown-template").html();
+		dropdownTemplate: $("#headerDropdown-template").html(),
+		hostButtonTemplate: $("#hostButton-template").html(),
+
+		events: {
+			'click #hostButton': 'openHostDialog'
 		},
 
+		init: function(options) {
+			this.model.bind('change', this.renderDropdown, this);
+			this.model.bind('change', this.renderHostButton, this);		},
+
 		renderDropdown: function() {
-			$("#dropdown-container").html( Mustache.render(this.dropdownTemplate, this.model.toJSON()) );	
+			this.$("#dropdown-container").html( Mustache.render(this.dropdownTemplate, this.model.toJSON()) );	
+		},
+
+		renderHostButton: function() {
+			this.$("#hostButton-container").html( Mustache.render(this.hostButtonTemplate, this.model.toJSON()) );
+		},
+
+		openHostDialog: function() {
+			var view = new airetyApp.view.hostChatsDialogView();
+			window.airety.app.showDialog(view, { render: true });
 		}
 	
 	});
@@ -114,12 +128,39 @@ $(function() {
 	
 		template: $("#registrationView-template").html(),
 
+		events: {
+			'click a.logInWithFacebook': 'signup'
+		},
+
 		init: function() {
 			$(window).on('scroll', this.scrolling);
 		},
 
 		render: function() {
 			this.$el.html(this.template);
+		},
+
+		signup: function() {
+			var that = this;
+            FB.getLoginStatus(function(response) {
+          		if (response.status === 'connected') {
+           			var uid = response.authResponse.userID;
+           			var accessToken = response.authResponse.accessToken;
+           			that.fbGetSignupData();
+         		} else {
+					FB.login(function(response) {
+						if (response.authResponse) {
+							that.fbGetSignupData();
+						}
+					}, {scope: 'email,user_location,user_hometown,user_work_history,user_education_history,user_interests,publish_actions'});
+         		}
+       		});
+        	return false;
+		},
+
+		fbGetSignupData: function() {
+			FB.api('/me', function(data) { 
+			});
 		},
 
 		scrolling: function() {
@@ -136,6 +177,74 @@ $(function() {
 	
 	});
 
+	airetyApp.view.chatsTodayView = airetyApp.view.baseView.extend({
+	
+		template: $("#chatsTodayView-template").html(),
+
+		init: function() {
+			$(window).on('scroll', this.scrolling);
+			this.collection.on('reset', this.addAll, this);
+			this.collection.on('add', this.addOne, this);
+		},
+
+		render: function() {
+			this.$el.html(this.template);
+			var halfWidth = this.$(".chatHeaderPop").outerWidth() / 2;
+			this.$(".chatHeaderPop").css('marginLeft','-'+halfWidth+'px');
+			$("#primaryContainer").addClass('chatsToday');
+			return this;
+		},
+
+		addAll: function() {
+			var that = this;
+			this.activeChildren.each(function(child) { 
+				child.close();   
+			});
+			this.activeChildren = [];
+			this.collection.each(function(chat){
+				that.addOne(chat)
+			});		
+		},
+
+		addOne: function(chat) {
+			var view = new chatsTodayItemView({
+				model: chat
+			});
+			this.$("ul").append(view);
+			view.render();
+			this.activeChildren.push(view);
+		},
+
+		scrolling: function() {
+			if ($(window).scrollTop() < 1){
+				this.$(".chatHeaderPop").css('z-index', '110');	
+			} else {
+				this.$(".chatHeaderPop").css('z-index', '90');
+			}
+		},
+
+		onClose: function() {
+			$(window).off('scroll', this.scrolling);
+		}
+
+	});
+
+	airetyApp.view.chatsTodayItemView = airetyApp.view.baseView.extend({
+	
+		tagName: 'li',
+		
+		template: $("#chatsTodayItemView-template").html(),
+
+		init: function() {
+			this.model.on('change', this.render, this);
+		},
+
+		render: function() {
+			this.$el.html(Mustache.render(this.template, this.model.toJSON()));
+		}
+
+	});
+
 	airetyApp.view.streamView = airetyApp.view.baseView.extend({
 	
 		className: "user-stream",
@@ -147,7 +256,7 @@ $(function() {
 			this.collection.on('add', this.addOne, this);
 
 			this.itemWidth = options.itemWidth || 210;
-			this.offset = options.offset || 15;
+			this.offset = options.offset || 20;
 		},
 
 		setUp: function() {
@@ -170,7 +279,7 @@ $(function() {
 			this.activeChildren.each(function(child) { 
 				child.close();   
 			});
-			this.aciveChildren = [];
+			this.activeChildren = [];
 			this.collection.each(function(user){
 				that.addOne(user)
 			});
@@ -264,6 +373,10 @@ $(function() {
 
 		className: 'schedule-chat-dialog-view',
 
+		events: {
+			'click span.checkboxContainer': 'checkTheBox'
+		},
+
 		init: function() {
 		},
 
@@ -275,8 +388,75 @@ $(function() {
 			});
 			this.showView('.card-column', this.cardView, { render: true });
 			return this;
+		},
+
+		checkTheBox: function(e) {
+			var target = $(e.target);
+			if(target.hasClass('active')){
+				target.removeClass('active');
+				target.children('input').attr('checked','');
+			} else {
+				target.addClass('active');
+				target.children('input').attr('checked', 'checked');
+			}
+			return false;
 		}
 	
+	});
+
+	airetyApp.view.hostChatsDialogView = airetyApp.view.baseView.extend({
+		
+		template: $("#hostChatsDialogView-template").html(),
+
+		className: 'host-chats-dialog-view',
+
+		events: {
+			'click td.checkable': 'checkCalendarSlot'
+		},
+
+		render: function() {
+			this.$el.html(Mustache.render(this.template));
+			var daysArray = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+			var timeSectionArray = [
+				{
+					name: 'Morning',
+					time: '8AM-12PM'
+				},{
+					name: 'Afternoon',
+					time: '12PM-4PM'
+				},{
+					name: 'Night',
+					time: '4PM-8PM'
+				},{
+					name: 'Late Night',
+					time: '8PM-11PM'
+				},{
+					name: 'Night Owl',
+					time: '11PM-2AM'
+				}];
+			for (var i = 0; i < timeSectionArray.length; i++){
+				var tableRow = '<tr><td><span class="big">'+timeSectionArray[i].name+'</span><span>'+timeSectionArray[i].time+'</span></td>';
+				for(var y = 0; y < daysArray.length; y++){
+					tableRow += '<td class="checkable"><input type="checkbox" name="'+daysArray[y]+'_'+timeSectionArray[i].name.toLowerCase()+'"></td>';
+				}
+				tableRow += '</tr>';
+				this.$(".host-chats-table tbody").append(tableRow);
+			}
+			return this;
+		},
+
+		checkCalendarSlot: function(e) {
+			var target = $(e.target);
+			if(target.hasClass('checked')){
+				target.removeClass('checked');
+				target.children('input').attr('checked','');
+			} else {
+				target.addClass('checked');
+				target.children('input').attr('checked','checked');
+			}
+			return false;
+		}
+
 	});
 
 });
