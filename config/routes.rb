@@ -3,7 +3,11 @@ Air::Application.routes.draw do
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
-  resources :chats
+  resources :chats do
+    member do
+      put :send_message
+    end
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

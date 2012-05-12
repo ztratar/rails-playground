@@ -60,6 +60,8 @@ class RequestsController < ApplicationController
 
     respond_to do |format|
       if @request.update_attributes(params[:request])
+        # init our chatroom if we have confirmed on both sides
+        @request.set_chat
         format.html { redirect_to @request, notice: 'Request was successfully updated.' }
         format.json { head :no_content }
       else

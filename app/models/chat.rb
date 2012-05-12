@@ -1,9 +1,11 @@
 class Chat
   include Mongoid::Document
 
-  field :request_id, :type => Integer
+  field :request_id, :type => String
   field :session_id, :type => String
   field :messages, :type => Array
+
+  embeds_many :messages
 
   belongs_to :request
 
@@ -20,7 +22,7 @@ class Chat
 
 	  def init_session(chat)
 	      @opentok = init_opentok
-	      if chat.session_id.empty?
+	      if chat.session_id.nil?
 		      id = @opentok.create_session '127.0.0.1'
 		      tok_session = id.to_s
 		      chat.session_id = tok_session
@@ -38,4 +40,12 @@ class Chat
 
   end
 
+end
+
+
+class Message
+  include Mongoid::Document
+  field :content, type: String
+  field :user_id, type: String
+  embedded_in :chat
 end

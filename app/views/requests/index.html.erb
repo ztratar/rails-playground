@@ -8,6 +8,7 @@
     <th>Host confirmation</th>
     <th>Latest message</th>
     <th>Ping pong</th>
+    <th>Has chat?</th>
     <th></th>
     <th></th>
     <th></th>
@@ -21,6 +22,7 @@
     <td><%= request.host_confirmation %></td>
     <td><%= request.latest_message %></td>
     <td><%= request.ping_pong %></td>
+    <td><%= request.has_chat? %></td>
     <td><%= link_to 'Show', request %></td>
     <td><%= link_to 'Edit', edit_request_path(request) %></td>
     <td><%= link_to 'Destroy', request, confirm: 'Are you sure?', method: :delete %></td>

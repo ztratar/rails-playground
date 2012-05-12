@@ -2,9 +2,9 @@
 
 <table>
   <tr>
-    <th>Event</th>
+    <th>Request ID</th>
     <th>Session</th>
-    <th></th>
+    <th>CHAT ID</th>
     <th></th>
     <th></th>
   </tr>
@@ -13,6 +13,7 @@
   <tr>
     <td><%= chat.request_id %></td>
     <td><%= chat.session_id %></td>
+    <td><%= chat.id %></td>
     <td><%= link_to 'Show', chat %></td>
     <td><%= link_to 'Edit', edit_chat_path(chat) %></td>
     <td><%= link_to 'Destroy', chat, confirm: 'Are you sure?', method: :delete %></td>
