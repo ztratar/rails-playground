@@ -22,6 +22,10 @@ Air::Application.routes.draw do
 
   match '/' => 'home#index'
 
+  match '/feed/home'
+
+
+
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
