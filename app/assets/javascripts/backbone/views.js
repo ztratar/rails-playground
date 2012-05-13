@@ -111,6 +111,139 @@ $(function() {
 	
 	});
 
+	airetyApp.view.chatView = airetyApp.view.baseView.extend({
+		
+		template: $("#chatView-template").html(),
+
+		render: function() {
+			this.$el.html(this.template);
+		}
+
+	});
+
+	airetyApp.view.chatColumnView = airetyApp.view.baseView.extend({
+	
+		template: $("#chatColumnView-template").html(),
+
+		init: function(options) {
+			this.apiKey = 14712672;
+			this.sessionId = window.chat.session || 'test';
+			this.token = window.chat.token || "T1==cGFydG5lcl9pZD0xNDcxMjY3MiZzaWc9NTAyMzE0NTBhMzI4Y2U4MjU5MjI3MmI3Mzg3NjM4NzA0ODk2N2MwZDpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPXRlc3QmY3JlYXRlX3RpbWU9MTMzNjg4NjUwMiZub25jZT0wLjgxNTAzODU5MTk4MDAwOA==";
+			this.publisher = {};
+
+			TB.setLogLevel(TB.DEBUG);
+		 
+			this.session = TB.initSession(this.sessionId);
+			this.session.addEventListener('sessionConnected', this.sessionConnectedHandler);
+			this.session.addEventListener('streamCreated', this.streamCreatedHandler);
+			this.session.connect(this.apiKey, this.token);
+		},
+
+		render: function() {
+			this.$el.html(this.template);
+		},
+
+		sessionConnectedHandler: function(event) {
+			this.publisher = this.session.publish('myPublisherDiv');
+       
+     		// Subscribe to streams that were in the session when we connected
+     		this.subscribeToStreams(event.streams);
+		},
+
+		streamCreatedHandler: function(event) {
+			// Subscribe to any new streams that are created
+     		this.subscribeToStreams(event.streams);
+		},
+
+		subscribeToStreams: function(streams) {
+			for (var i = 0; i < streams.length; i++) {
+			// Make sure we don't subscribe to ourself
+			if (streams[i].connection.connectionId == this.session.connection.connectionId) {
+			  return;
+			}
+	 
+			// Create the div to put the subscriber element in to
+			var div = document.createElement('div');
+			div.setAttribute('id', 'stream' + streams[i].streamId);
+			this.$(".othersChat-container")[0].appendChild(div);
+							   
+			// Subscribe to the stream
+			this.session.subscribe(streams[i], div.id);
+		  }
+		}
+	
+	});
+
+	airetyApp.view.textChatView = airetyApp.view.baseView.extend({
+	
+		template: $("#textChatView-template").html(),
+
+		events: {
+			'submit form': 'sendMessage',
+			'click a.submit-message': 'clickSend'
+		},
+
+		init: function() {
+			this.collection.on('reset', this.addAll, this);
+			this.collection.on('add', this.addOne, this);
+		},
+
+		render: function() {
+			this.$el.html(this.template);
+		},
+
+		addAll: function() {
+			var that = this;
+			this.activeChildren.each(function(child) { 
+				child.close();   
+			});
+			this.activeChildren = [];
+			this.collection.each(function(chat){
+				that.addOne(chat)
+			});		
+		},
+
+		addOne: function(chat) {
+			var view = new airetyApp.view.textChatItemView({
+				model: chat
+			});
+			this.$("ul.messages").append(view.$el);
+			view.render();
+			this.$("ul.messages").scrollTop(this.$("ul.messages")[0].scrollHeight);
+			this.activeChildren.push(view);
+		},
+
+		clickSend: function() {
+			this.sendMessage();
+			return false;
+		},
+
+		sendMessage: function() {
+			var $input = this.$("input");
+			this.collection.add({
+				name: window.airety.app.model.get('first_name'),
+				message: $input.val()
+			});
+			$input.val('');
+			return false;
+		}
+	
+	});
+
+
+	airetyApp.view.textChatItemView = airetyApp.view.baseView.extend({
+	
+		tagName: 'li',
+
+		template: $("#textChatItemView-template").html(),
+
+		render: function() {
+			this.$el.html(Mustache.render(this.template, this.model.toJSON()));
+		}
+	
+	});
+
+
 	airetyApp.view.homeView = airetyApp.view.baseView.extend({
 	
 		template: $("#homeView-template").html(),
@@ -181,18 +314,26 @@ $(function() {
 	
 		template: $("#chatsTodayView-template").html(),
 
+		events: {
+			'click li': 'showRoomOpts'
+		},
+
 		init: function() {
 			$(window).on('scroll', this.scrolling);
 			this.collection.on('reset', this.addAll, this);
 			this.collection.on('add', this.addOne, this);
+			this.render();
 		},
 
 		render: function() {
 			this.$el.html(this.template);
+			return this;
+		},
+
+		center: function() {
 			var halfWidth = this.$(".chatHeaderPop").outerWidth() / 2;
 			this.$(".chatHeaderPop").css('marginLeft','-'+halfWidth+'px');
 			$("#primaryContainer").addClass('chatsToday');
-			return this;
 		},
 
 		addAll: function() {
@@ -207,12 +348,26 @@ $(function() {
 		},
 
 		addOne: function(chat) {
-			var view = new chatsTodayItemView({
+			var view = new airetyApp.view.chatsTodayItemView({
 				model: chat
 			});
-			this.$("ul").append(view);
+			this.$("ul").append(view.$el);
 			view.render();
+			if(this.activeChildren.length >= 1){
+				view.$el.addClass('rightItem');
+			} else {
+				view.$el.width('335').addClass('active');
+			}
 			this.activeChildren.push(view);
+		},
+
+		showRoomOpts: function(e) {
+			var allElements = $(e.currentTarget).parent().children('li');
+			var thisElement = $(e.currentTarget);
+			if(!thisElement.hasClass('active')){
+				allElements.not(thisElement).animate({ width: '56px'}, 100).removeClass('active');
+				thisElement.animate({ width: '335px' }, 100).addClass('active');
+			}
 		},
 
 		scrolling: function() {

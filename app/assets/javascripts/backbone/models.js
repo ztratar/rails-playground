@@ -18,6 +18,10 @@ $(function(){
 		urlRoot: '/chats'
 	});
 
+	airetyApp.model.textChat = airetyApp.model.baseModel.extend({
+		urlRoot: '/textChats'
+	});
+
 	
 	/* collections */
 
@@ -60,6 +64,10 @@ $(function(){
 
 	airetyApp.collection.chats = airetyApp.collection.baseCollection.extend({
 		model: airetyApp.model.chat
+	});
+
+	airetyApp.collection.textChats = airetyApp.collection.baseCollection.extend({
+		model: airetyApp.model.textChat
 	});
 
 });
