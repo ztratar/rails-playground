@@ -12,6 +12,7 @@ class User
 
   
   ## Database authenticatable
+  field :fb_id, :type => Integer
   field :email,              :type => String, :null => false, :default => ""
   field :encrypted_password, :type => String, :null => false, :default => ""
 
@@ -29,17 +30,26 @@ class User
   field :current_sign_in_ip, :type => String
   field :last_sign_in_ip,    :type => String
   field :chats_scheduled,    :type => Array
+  field :chats_finished_count, :type => Integer, :default => 0
 
-  ## personal info
+  ## Personal Info
+  field :name, :type => String
   field :first_name, :type => String
   field :last_name, :type => String
-  field :about, :type => String
+  field :help_bio, :type => String
+  field :picture, :type => Hash
 
-  field :locations, :type => Array
-  field :workplaces, :type => Array
-  field :schools, :type => Array
+  ## Locations
+  field :hometown, :type => Hash
+  field :location, :type => Hash
+  field :work, :type => Array
+  field :education, :type => Array
 
-  field :is_host => Boolean
+  ## Hosting Info
+  field :hosting, :type => Boolean
+  field :timezone, :type => Integer
+  field :availability, :type => Hash
+
 
   ## Encryptable
   # field :password_salt, :type => String

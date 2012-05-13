@@ -5,14 +5,12 @@ class Request
   field :host_id, :type => String
   field :requester_confirmation, :type => Boolean
   field :host_confirmation, :type => Boolean
-  field :latest_message, :type => String
+  field :times, :type => Array
+  field :why, :type => String
   field :ping_pong, :type => Integer
-  field :reqtimes, :type => Array
 
   belongs_to :user
   has_one :chat, :dependent => :destroy, :foreign_key => "request_id", :class_name => "Chat"
-
-
 
   def set_chat
     if self.host_confirmation && self.requester_confirmation && chat.nil?
@@ -21,7 +19,6 @@ class Request
     end
   end
 
-
   def has_chat?
     if !chat.nil?
       return true
@@ -29,6 +26,5 @@ class Request
       return false
     end
   end
-
 
 end
