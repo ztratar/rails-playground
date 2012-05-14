@@ -6,6 +6,7 @@ class User
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
   embeds_many :availability
+  # must do create user first (a = User.new) then push in availability (a.availability << Availability.new(day_of_week: "day"))
 
   has_many :sent_requests, :dependent => :destroy, :foreign_key => "requester_id", :class_name => "Request"
   has_many :received_requests, :dependent => :destroy, :foreign_key => "host_id", :class_name => "Request"
@@ -47,8 +48,8 @@ class User
 
   ## Hosting Info
   field :hosting, :type => Boolean
+  # do we need hosting? can we just use "!availability.nil?"
   field :timezone, :type => Integer
-  field :availability, :type => Hash
 
 
   ## Encryptable
@@ -68,22 +69,24 @@ class User
   ## Token authenticatable
   # field :authentication_token, :type => String
 
-def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
-  data = access_token.extra.raw_info
-  if user = User.where(:email => data.email).first
-    user
-  else # Create a user with a stub password. 
-    User.create!(:email => data.email, :password => Devise.friendly_token[0,20]) 
-  end
-end
+  scope :hosting?, where(:availability.exists => true)
 
-def self.new_with_session(params, session)
-  super.tap do |user|
-    if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
-      user.email = data["email"]
+  def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
+    data = access_token.extra.raw_info
+    if user = User.where(:email => data.email).first
+      user
+    else # Create a user with a stub password. 
+      User.create!(:email => data.email, :password => Devise.friendly_token[0,20]) 
     end
   end
-end
+
+  def self.new_with_session(params, session)
+    super.tap do |user|
+      if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
+        user.email = data["email"]
+      end
+    end
+  end
 
 
 end
