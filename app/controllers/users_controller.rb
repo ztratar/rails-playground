@@ -80,4 +80,14 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
+  #User defined methods
+
+  def upcoming_chats
+    chats = User.get_chats(params[:id])
+    
+    render :json => chats
+  end
+
 end

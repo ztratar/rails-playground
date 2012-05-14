@@ -1,7 +1,7 @@
 Air::Application.routes.draw do
   resources :requests
 
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  resources :users
 
   resources :chats do
     member do
@@ -22,7 +22,13 @@ Air::Application.routes.draw do
 
   match '/' => 'home#index'
 
-  match '/feed/home'
+  match '/feed/home' => 'feed#index'
+
+  match '/users/:id/chats' => 'user#upcoming_chats'
+
+  match '/users/:id/requests' => 'request#all_requests'
+
+  match '/users/:id/requested' => 'request#all_requested'
 
 
 

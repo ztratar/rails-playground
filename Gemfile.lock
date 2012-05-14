@@ -119,6 +119,9 @@ GEM
     opentok (0.0.6)
     orm_adapter (0.0.7)
     polyglot (0.3.3)
+    rabl (0.6.11)
+      activesupport (>= 2.3.14)
+      multi_json (~> 1.0)
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -180,10 +183,12 @@ DEPENDENCIES
   devise
   faye
   jquery-rails
+  json
   less-rails-bootstrap
   mongoid
   omniauth-facebook
   opentok
+  rabl
   rails (= 3.2.3)
   sass-rails (~> 3.2.3)
   simple-navigation
