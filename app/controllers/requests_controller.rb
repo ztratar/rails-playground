@@ -82,4 +82,21 @@ class RequestsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
+
+  # User defined
+
+  def all_requests
+    requests = Request.requests(params[:id]).entries
+
+    render :json => requests
+  end
+
+  def all_requested
+    requests Request.requested(params[:id]).entries
+
+    render :json => requests
+  end
+
 end

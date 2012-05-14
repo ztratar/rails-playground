@@ -2,7 +2,7 @@ class Chat
   include Mongoid::Document
   belongs_to :request
 
-  embeds_many :messages
+  embeds_many :message
 
   field :host_id, :type => Integer
   field :requestee_id, :type => Integer

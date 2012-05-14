@@ -24,6 +24,12 @@ Air::Application.routes.draw do
 
   match '/feed/home' => 'feed#index'
 
+  match '/users/:id/chats' => 'user#upcoming_chats'
+
+  match '/users/:id/requests' => 'request#all_requests'
+
+  match '/users/:id/requested' => 'request#all_requested'
+
 
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
