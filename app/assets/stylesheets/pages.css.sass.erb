@@ -327,16 +327,69 @@
     float: left
     width: 210px
 
+    .myChat-container
+      border: 1px solid #bbb
+      border-radius: 10px
+      position: relative
+      width: 214px
+      height: 137px
+      overflow: hidden
+      margin-bottom: 15px
+
   .chat-column
     float: left
-    margin: 0 0 0 12px
-    width: 678px
+    margin: 0 0 0 20px
+    width: 670px
 
     .chatVideos
-      height: 370px
+      height: 365px
       border: 1px solid #bbb
       background: #ddd
-      border-radius: 5px
+      border-radius: 10px
+      position: relative
+      overflow: hidden
+
+  .corner1,
+  .corner2,
+  .corner3,
+  .corner4
+    background: url(<%= asset_path "chatBorder.png" %>) no-repeat top left
+    height: 5px
+    position: absolute
+    width: 5px
+    z-index: 99
+
+  .corner1
+    left: 0
+    top: 0
+
+  .corner2
+    right: 0
+    top: 0
+    -moz-transform: rotate(90deg)
+    -ms-transform: rotate(90deg)
+    -o-transform: rotate(90deg)
+    -webkit-transform: rotate(90deg)
+
+  .corner3
+    bottom: 0
+    right: 0
+    -moz-transform: rotate(180deg)
+    -ms-transform: rotate(180deg)
+    -o-transform: rotate(180deg)
+    -webkit-transform: rotate(180deg)
+
+  .corner4
+    bottom: 0
+    left: 0
+    -moz-transform: rotate(270deg)
+    -ms-transform: rotate(270deg)
+    -o-transform: rotate(270deg)
+    -webkit-transform: rotate(270deg)
+
+  #othersChat
+    width: 678px
+    height: 372px
 
   .textChat
     background: #F8FBF9
@@ -379,7 +432,7 @@
       border-top: 1px solid #e6e6e6
 
       input
-        width: 510px
+        width: 502px
         float: left
         padding: 7px
         height: 17px

@@ -115,27 +115,22 @@ $(function() {
 		
 		template: $("#chatView-template").html(),
 
-		render: function() {
-			this.$el.html(this.template);
-		}
-
-	});
-
-	airetyApp.view.chatColumnView = airetyApp.view.baseView.extend({
-	
-		template: $("#chatColumnView-template").html(),
-
-		init: function(options) {
+		initChat: function(options) {
 			this.apiKey = 14712672;
 			this.sessionId = window.chat.session || 'test';
-			this.token = window.chat.token || "T1==cGFydG5lcl9pZD0xNDcxMjY3MiZzaWc9NTAyMzE0NTBhMzI4Y2U4MjU5MjI3MmI3Mzg3NjM4NzA0ODk2N2MwZDpyb2xlPXB1Ymxpc2hlciZzZXNzaW9uX2lkPXRlc3QmY3JlYXRlX3RpbWU9MTMzNjg4NjUwMiZub25jZT0wLjgxNTAzODU5MTk4MDAwOA==";
+			this.token = window.chat.token;
 			this.publisher = {};
 
 			TB.setLogLevel(TB.DEBUG);
 		 
 			this.session = TB.initSession(this.sessionId);
-			this.session.addEventListener('sessionConnected', this.sessionConnectedHandler);
-			this.session.addEventListener('streamCreated', this.streamCreatedHandler);
+			var that = this;
+			this.session.addEventListener('sessionConnected', function(e) {
+		   		that.sessionConnectedHandler.call(that, e);
+			});
+			this.session.addEventListener('streamCreated', function(e) {
+				that.streamCreatedHandler.call(that, e);
+			});
 			this.session.connect(this.apiKey, this.token);
 		},
 
@@ -144,8 +139,7 @@ $(function() {
 		},
 
 		sessionConnectedHandler: function(event) {
-			this.publisher = this.session.publish('myPublisherDiv');
-       
+			this.publisher = this.session.publish('myChat', { width: 214, height: 137 });
      		// Subscribe to streams that were in the session when we connected
      		this.subscribeToStreams(event.streams);
 		},
@@ -157,19 +151,34 @@ $(function() {
 
 		subscribeToStreams: function(streams) {
 			for (var i = 0; i < streams.length; i++) {
-			// Make sure we don't subscribe to ourself
-			if (streams[i].connection.connectionId == this.session.connection.connectionId) {
-			  return;
-			}
-	 
-			// Create the div to put the subscriber element in to
-			var div = document.createElement('div');
-			div.setAttribute('id', 'stream' + streams[i].streamId);
-			this.$(".othersChat-container")[0].appendChild(div);
-							   
-			// Subscribe to the stream
-			this.session.subscribe(streams[i], div.id);
-		  }
+				// Make sure we don't subscribe to ourself
+				if (streams[i].connection.connectionId == this.session.connection.connectionId) {
+				  return;
+				}
+		 
+				// Create the div to put the subscriber element in to
+				var div = document.createElement('div');
+				div.setAttribute('id', 'stream' + streams[i].streamId);
+				this.$(".othersChat-container")[0].appendChild(div);
+								   
+				var subscriberProps = {
+					width: 670, 
+					height: 365
+				};
+
+				// Subscribe to the stream
+				this.session.subscribe(streams[i], div.id, subscriberProps);
+			  }
+		}
+
+	});
+
+	airetyApp.view.chatColumnView = airetyApp.view.baseView.extend({
+	
+		template: $("#chatColumnView-template").html(),
+
+		render: function() {
+			this.$el.html(this.template);
 		}
 	
 	});
@@ -183,24 +192,14 @@ $(function() {
 			'click a.submit-message': 'clickSend'
 		},
 
-		init: function() {
-			this.collection.on('reset', this.addAll, this);
-			this.collection.on('add', this.addOne, this);
+		init: function(options) {
+			this.model.chats.on('add', this.addOne, this);
+       		this.socket = options.socket;
+			this.lastMessageSent = (new Date()).getTime();
 		},
 
 		render: function() {
 			this.$el.html(this.template);
-		},
-
-		addAll: function() {
-			var that = this;
-			this.activeChildren.each(function(child) { 
-				child.close();   
-			});
-			this.activeChildren = [];
-			this.collection.each(function(chat){
-				that.addOne(chat)
-			});		
 		},
 
 		addOne: function(chat) {
@@ -213,19 +212,52 @@ $(function() {
 			this.activeChildren.push(view);
 		},
 
+		 msgReceived: function(message){
+			var that = this;
+			switch(message.event) {
+				case 'initial':
+					this.model.mport(message.data);
+					var that = this;
+					this.model.chats.each(function(chat){
+						that.addOne(chat);
+					});
+					break;
+				case 'chat':
+					var newChatEntry = new airetyApp.model.textChat();
+					newChatEntry.mport(message.data);
+					this.model.chats.add(newChatEntry);
+					break;
+			}
+		},
+
 		clickSend: function() {
 			this.sendMessage();
 			return false;
 		},
 
 		sendMessage: function() {
-			var $input = this.$("input");
-			this.collection.add({
-				name: window.airety.app.model.get('first_name'),
-				message: $input.val()
-			});
-			$input.val('');
+			var currentTime = (new Date()).getTime();
+			if ((currentTime-this.lastMessageSent) > 2000){ 
+				var $input = this.$("input");
+				var newMessage = new airetyApp.model.textChat({
+					name: window.airety.app.model.get('first_name'),
+					message: $input.val()
+				});
+				this.socket.send(newMessage.xport());
+				$input.val('');
+				this.lastMessageSent = (new Date()).getTime();
+			} else {
+				var that = this;
+				this.$("a.submit-message").html('wait...');
+				if(this.newTimeout)
+					clearTimeout(this.newTimeout);
+				this.newTimeout = setTimeout(this.changeBackToSend, 2000-(currentTime-this.lastMessageSent));
+			}
 			return false;
+		},
+
+		changeBackToSend: function() {
+			this.$("a.submit-message").html('Send');
 		}
 	
 	});

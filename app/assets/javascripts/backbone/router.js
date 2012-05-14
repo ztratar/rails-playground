@@ -53,16 +53,23 @@ $(function(){
 			},
 
 			chats: function(id) {
+				var that = this;
+				this.socket = io.connect('http://192.168.1.108:8000/');
+			
+				this.chat = new airetyApp.model.chat({
+					id: id
+				});
+       			this.nodeChatModel = new airetyApp.model.nodeChatModel({id: id});
 
-				this.chat = new airetyApp.model.chat();
-				this.textChats = new airetyApp.collection.textChats();
-
-				this.chatView = new airetyApp.view.chatView();
+				this.chatView = new airetyApp.view.chatView({
+					model: this.chat
+				});
 				this.chatColumnView = new airetyApp.view.chatColumnView({
 					model: this.chat
 				});
 				this.textChatView = new airetyApp.view.textChatView({
-					collection: this.textChats
+					model: this.nodeChatModel,
+					socket: this.socket
 				});
 				this.cardView = new airetyApp.view.userCardView({
 					model: window.airety.app.model,
@@ -74,7 +81,18 @@ $(function(){
 				window.airety.app.showView('#primaryContainer', this.chatView, { render: true });
 				this.chatView.showView('.chat-column', this.chatColumnView, { render: true });
 				this.chatColumnView.showView('.textChat-container', this.textChatView, { render: true });
-				this.chatView.showView('.card-column', this.cardView, { render: true });
+				this.chatView.showView('.card-container', this.cardView, { render: true });
+
+				this.chatView.initChat();
+
+        		this.socket.on('message', function(msg) { that.textChatView.msgReceived(msg); });
+				var connectionObj = {
+					__special: {
+						chatRoomId: id
+					}
+				};
+				this.socket.send(JSON.stringify(connectionObj));
+
 			}
 
 	});
