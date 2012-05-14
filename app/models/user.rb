@@ -5,7 +5,9 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
-  embeds_many :availability
+
+  embeds_many :work
+
 
   has_many :sent_requests, :dependent => :destroy, :foreign_key => "requester_id", :class_name => "Request"
   has_many :received_requests, :dependent => :destroy, :foreign_key => "host_id", :class_name => "Request"
@@ -36,6 +38,7 @@ class User
   field :name, :type => String
   field :first_name, :type => String
   field :last_name, :type => String
+  field :gender, :type => String
   field :help_bio, :type => String
   field :picture, :type => Hash
 
@@ -86,4 +89,19 @@ def self.new_with_session(params, session)
 end
 
 
+end
+
+
+
+class Work
+  include Mongoid::Document
+  field :fb_id, :type => Integer
+  field :show_in_card, :type => Boolean, :default => true
+  field :name, :type => String
+  field :description, :type => String
+  field :start_date, :type => DateTime
+  field :location_name, :type => String
+  field :location_lat, :type => Integer
+  field :location_long, :type => Integer
+  embedded_in :user
 end
