@@ -5,9 +5,13 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
-
+  embeds_many :availability
   embeds_many :work
-
+  embeds_many :education
+  embeds_many :chats_scheduled
+  embeds_one :picture
+  embeds_one :hometown
+  embeds_one :location
 
   has_many :sent_requests, :dependent => :destroy, :foreign_key => "requester_id", :class_name => "Request"
   has_many :received_requests, :dependent => :destroy, :foreign_key => "host_id", :class_name => "Request"

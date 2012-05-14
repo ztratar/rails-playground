@@ -1,8 +1,8 @@
 class Request
   include Mongoid::Document
 
-  field :requester_id, :type => String
-  field :host_id, :type => String
+  field :host_id, :type => Integer
+  field :requestee_id, :type => Integer
   field :requester_confirmation, :type => Boolean
   field :host_confirmation, :type => Boolean
   field :times, :type => Array
