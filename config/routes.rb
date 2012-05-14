@@ -22,7 +22,7 @@ Air::Application.routes.draw do
 
   match '/' => 'home#index'
 
-  match '/feed/home'
+  match '/feed/home' => 'feed#index'
 
 
 

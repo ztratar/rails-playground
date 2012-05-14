@@ -5,10 +5,12 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
-  embeds_many :availability
   embeds_many :work
   embeds_many :education
   embeds_many :chats_scheduled
+  embeds_many :availability
+  # must do create user first (a = User.new) then push in availability (a.availability << Availability.new(day_of_week: "day"))
+  
   embeds_one :picture
   embeds_one :hometown
   embeds_one :location
@@ -35,7 +37,6 @@ class User
   field :last_sign_in_at,    :type => Time
   field :current_sign_in_ip, :type => String
   field :last_sign_in_ip,    :type => String
-  field :chats_scheduled,    :type => Array
   field :chats_finished_count, :type => Integer, :default => 0
 
   ## Personal Info
@@ -54,9 +55,10 @@ class User
 
   ## Hosting Info
   field :hosting, :type => Boolean
+  # do we need hosting? can we just use "!availability.nil?"
   field :timezone, :type => Integer
-  field :availability, :type => Hash
 
+  scope :all_hosts, where(:availability.exists => true)
 
   ## Encryptable
   # field :password_salt, :type => String
@@ -74,26 +76,24 @@ class User
 
   ## Token authenticatable
   # field :authentication_token, :type => String
-=begin
-def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
-  data = access_token.extra.raw_info
-  if user = User.where(:email => data.email).first
-    user
-  else # Create a user with a stub password. 
-    User.create!(:email => data.email, :password => Devise.friendly_token[0,20]) 
-  end
-end
-
-def self.new_with_session(params, session)
-  super.tap do |user|
-    if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
-      user.email = data["email"]
-    end
-  end
-end
-=end
 
 
+  # def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
+  #   data = access_token.extra.raw_info
+  #   if user = User.where(:email => data.email).first
+  #     user
+  #   else # Create a user with a stub password. 
+  #     User.create!(:email => data.email, :password => Devise.friendly_token[0,20]) 
+  #   end
+  # end
+
+  # def self.new_with_session(params, session)
+  #   super.tap do |user|
+  #     if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
+  #       user.email = data["email"]
+  #     end
+  #   end
+  # end
 end
 
 
@@ -101,6 +101,8 @@ end
 # Embeds many area
 class Work
   include Mongoid::Document
+  embedded_in :user
+  
   field :fb_id, :type => Integer
   field :show_in_card, :type => Boolean, :default => true
   field :name, :type => String
@@ -109,40 +111,66 @@ class Work
   field :location_name, :type => String
   field :location_lat, :type => Integer
   field :location_long, :type => Integer
-  embedded_in :user
 end
 
 class Education
   include Mongoid::Document
+  embedded_in :user
+
   field :type, :type => String
   field :fb_id, :type => Integer
   field :show_in_card, :type => Boolean, :default => true
   field :name, :type => String
   field :concentration, :type => String
   field :picture_src, :type => String
-  embedded_in :user
 end
 
+class Availability
+  include Mongoid::Document
+  embedded_in :user
+
+  validates_presence_of :day_of_week
+  validates_uniqueness_of :day_of_week
+
+  field :day_of_week, :type => String
+  field :morning, :type => Boolean, :default => false
+  field :afternoon, :type => Boolean, :default => false
+  field :evening, :type => Boolean, :default => false
+  field :night, :type => Boolean, :default => false
+  field :late, :type => Boolean, :default => false
+end
+
+class ChatsScheduled
+  include Mongoid::Document
+  embedded_in :user
+
+  #unfinished 
 
 
+
+
+
+end
 
 # Embeds one area
 class Picture
   include Mongoid::Document
+  embedded_in :user
+
   field :src, :type => String
   field :width, :type => Integer
   field :height, :type => Integer
-  embedded_in :user
 end
 
 class Hometown
   include Mongoid::Document
+  embedded_in :user
+  
   field :fb_id, :type => Integer
   field :show_in_card, :type => Boolean, :default => false
   field :name, :type => String
   field :location_lat, :type => Integer
   field :location_long, :type => Integer
-  embedded_in :user
 end
 
 class Location
