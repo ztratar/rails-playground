@@ -74,7 +74,7 @@ class User
 
   ## Token authenticatable
   # field :authentication_token, :type => String
-
+=begin
 def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
   data = access_token.extra.raw_info
   if user = User.where(:email => data.email).first
@@ -91,12 +91,14 @@ def self.new_with_session(params, session)
     end
   end
 end
+=end
 
 
 end
 
 
 
+# Embeds many area
 class Work
   include Mongoid::Document
   field :fb_id, :type => Integer
@@ -105,6 +107,49 @@ class Work
   field :description, :type => String
   field :start_date, :type => DateTime
   field :location_name, :type => String
+  field :location_lat, :type => Integer
+  field :location_long, :type => Integer
+  embedded_in :user
+end
+
+class Education
+  include Mongoid::Document
+  field :type, :type => String
+  field :fb_id, :type => Integer
+  field :show_in_card, :type => Boolean, :default => true
+  field :name, :type => String
+  field :concentration, :type => String
+  field :picture_src, :type => String
+  embedded_in :user
+end
+
+
+
+
+# Embeds one area
+class Picture
+  include Mongoid::Document
+  field :src, :type => String
+  field :width, :type => Integer
+  field :height, :type => Integer
+  embedded_in :user
+end
+
+class Hometown
+  include Mongoid::Document
+  field :fb_id, :type => Integer
+  field :show_in_card, :type => Boolean, :default => false
+  field :name, :type => String
+  field :location_lat, :type => Integer
+  field :location_long, :type => Integer
+  embedded_in :user
+end
+
+class Location
+  include Mongoid::Document
+  field :fb_id, :type => Integer
+  field :show_in_card, :type => Boolean, :default => false
+  field :name, :type => String
   field :location_lat, :type => Integer
   field :location_long, :type => Integer
   embedded_in :user
