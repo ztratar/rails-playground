@@ -5,6 +5,7 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <script src="http://staging.tokbox.com/v0.91/js/TB.min.js"></script>
 </head>
 
 <body>
@@ -30,7 +31,9 @@
    <script>
      	window.airety.currentUser = {
 				id: 1,
-				name: 'Zach Tratar',
+                name: 'Zach Tratar',
+                first_name: 'Zach',
+                last_name: 'Tratar',
 				picture: {
 					src: 'http://localhost:3000/assets/zach.png'
 				}
@@ -87,6 +90,36 @@
 <script id="homeView-template" type="text/template">
   <div class="top-container"></div>
   <div class="stream-container"></div>
+</script>
+
+<script id="chatView-template" type="text/template">
+  <div class="chatCall-container">
+    <div class="card-column"></div>
+    <div class="chat-column"></div>
+  </div>
+</script>
+
+<script id="chatColumnView-template" type="text/template">
+  <div class="chatVideos">
+    <div class="othersChat-container"></div>
+    <div class="myChat-container"></div>
+  </div>
+  <div class="textChat-container"></div>
+</script>
+
+<script id="textChatView-template" type="text/template">
+  <div class="textChat">
+    <ul class="messages"></ul>
+    <form class="send-message">
+      <input type="text" name="message" placeholder="Chat here..." />
+      <a href="#" class="submit-message button">Send</a>
+    </form>
+  </div>
+</script>
+
+<script id="textChatItemView-template" type="text/template">
+  <img src="<%= asset_path "zach.png" %>">
+  <p class="message"><strong>{{name}}: </strong>{{message}}</p>
 </script>
 
 <script id="registrationView-template" type="text/template">

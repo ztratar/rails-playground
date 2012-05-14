@@ -19,7 +19,6 @@ class ChatsController < ApplicationController
     @chat = Chat.init_session(@chat)
     @tok_token = Chat.gen_token(@chat)
 
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @chat }
