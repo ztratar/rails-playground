@@ -60,6 +60,10 @@ class User
 
   scope :all_hosts, where(:availability.exists => true)
 
+  def get_chats(user_id)
+    User.find(user_id).chats_scheduled
+  end
+
   ## Encryptable
   # field :password_salt, :type => String
 
@@ -144,12 +148,10 @@ class ChatsScheduled
   include Mongoid::Document
   embedded_in :user
 
-  #unfinished 
-
-
-
-
-
+  field :host_id, :type => Integer
+  field :requestee_id, :type => Integer
+  field :start_time, :type => Time
+  field :end_time, :type => Time
 end
 
 # Embeds one area
