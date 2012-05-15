@@ -3,6 +3,7 @@
 <head>
   <title>Airety</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
+  <script src="http://192.168.1.108:8000/socket.io/socket.io.js"></script>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
   <script src="http://staging.tokbox.com/v0.91/js/TB.min.js"></script>
@@ -94,15 +95,28 @@
 
 <script id="chatView-template" type="text/template">
   <div class="chatCall-container">
-    <div class="card-column"></div>
+    <div class="card-column">
+      <div class="myChat-container">
+        <div id="myChat"></div>
+        <div class="corner1"></div>
+        <div class="corner2"></div>
+        <div class="corner3"></div>
+        <div class="corner4"></div>
+      </div>
+      <div class="card-container"></div>
+    </div>
     <div class="chat-column"></div>
   </div>
 </script>
 
 <script id="chatColumnView-template" type="text/template">
   <div class="chatVideos">
-    <div class="othersChat-container"></div>
-    <div class="myChat-container"></div>
+    <div class="othersChat-container">
+      <div class="corner1"></div>
+      <div class="corner2"></div>
+      <div class="corner3"></div>
+      <div class="corner4"></div>
+    </div>
   </div>
   <div class="textChat-container"></div>
 </script>

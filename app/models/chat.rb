@@ -23,12 +23,12 @@ class Chat
 
 
 	  def init_session(chat)
-      @opentok = init_opentok
-      if chat.session_id.nil?
-	      id = @opentok.create_session '127.0.0.1'
-	      tok_session = id.to_s
-	      chat.session_id = tok_session
-	      chat.save
+	      @opentok = init_opentok
+	      if chat.session_id.nil? || chat.session_id.empty?
+		      id = @opentok.create_session '127.0.0.1'
+		      tok_session = id.to_s
+		      chat.session_id = tok_session
+		      chat.save
 		  end
 		  return chat
 	  end
@@ -47,7 +47,6 @@ end
 class Message
   include Mongoid::Document
   embedded_in :chat
-
   field :user_id, type: Integer
   field :username, type: String
   field :content, type: String
