@@ -30,8 +30,6 @@ Air::Application.routes.draw do
 
   match '/users/:id/requested' => 'request#all_requested'
 
-
-
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
