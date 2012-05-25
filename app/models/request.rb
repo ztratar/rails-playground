@@ -3,7 +3,7 @@ class Request
   belongs_to :user
   has_one :chat, :dependent => :destroy, :foreign_key => "request_id", :class_name => "Chat"
 
-  embed_many :reqtime
+  embeds_many :reqtime
   
   field :host_id, :type => Integer
   field :requestee_id, :type => Integer
@@ -40,6 +40,7 @@ end
 # Embed
 
 class Reqtime
+  include Mongoid::Document
   embedded_in :request
 
   field :start_time, :type => Time

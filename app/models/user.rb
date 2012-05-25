@@ -7,7 +7,7 @@ class User
 
   embeds_many :work
   embeds_many :education
-  embeds_many :chats_scheduled
+  embeds_many :scheduled_chat
   embeds_many :availability
   # must do create user first (a = User.new) then push in availability (a.availability << Availability.new(day_of_week: "day"))
   
@@ -60,8 +60,8 @@ class User
 
   scope :all_hosts, where(:availability.exists => true)
 
-  def get_chats(user_id)
-    User.find(user_id).chats_scheduled
+  def get_chats(fb_id)
+    User.where(fb_id: fb_id).first.scheduled_chat
   end
 
   ## Encryptable
@@ -144,7 +144,7 @@ class Availability
   field :late, :type => Boolean, :default => false
 end
 
-class ChatsScheduled
+class ScheduledChat
   include Mongoid::Document
   embedded_in :user
 

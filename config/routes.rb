@@ -24,7 +24,7 @@ Air::Application.routes.draw do
 
   match '/feed/home' => 'feed#index'
 
-  match '/users/:id/chats' => 'user#upcoming_chats'
+  match '/users/:id/chats' => 'users#upcoming_chats'
 
   match '/users/:id/requests' => 'request#all_requests'
 

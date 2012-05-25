@@ -13,7 +13,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @user = User.find(params[:id])
+    @user = User.where(fb_id: params[:fb_id]).first
 
     respond_to do |format|
       format.html # show.html.erb
@@ -85,9 +85,9 @@ class UsersController < ApplicationController
   #User defined methods
 
   def upcoming_chats
-    chats = User.get_chats(params[:id])
-    
-    render :json => chats
+    @user = User.where(fb_id: params[:id]).first
+    @chats = @user.scheduled_chat
+    render :rabl => @chats
   end
 
 end
