@@ -1,7 +1,7 @@
 class Request
   include Mongoid::Document
   belongs_to :user
-  has_one :chat, :dependent => :destroy, :foreign_key => "request_id", :class_name => "Chat"
+  has_one :chat, :dependent => :destroy, :foreign_key => "request_id", :class_name => "Chat"  
 
   embeds_many :reqtime
   

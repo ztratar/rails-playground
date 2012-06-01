@@ -7,7 +7,6 @@ class User
 
   embeds_many :work
   embeds_many :education
-  embeds_many :scheduled_chat
   embeds_many :availability
   # must do create user first (a = User.new) then push in availability (a.availability << Availability.new(day_of_week: "day"))
   
@@ -17,7 +16,7 @@ class User
 
   has_many :sent_requests, :dependent => :destroy, :foreign_key => "requester_id", :class_name => "Request"
   has_many :received_requests, :dependent => :destroy, :foreign_key => "host_id", :class_name => "Request"
-
+  has_many :chats
   
   ## Database authenticatable
   field :fb_id, :type => Integer
@@ -59,10 +58,6 @@ class User
   field :timezone, :type => Integer
 
   scope :all_hosts, where(:availability.exists => true)
-
-  def get_chats(fb_id)
-    User.where(fb_id: fb_id).first.scheduled_chat
-  end
 
   ## Encryptable
   # field :password_salt, :type => String
@@ -142,16 +137,6 @@ class Availability
   field :evening, :type => Boolean, :default => false
   field :night, :type => Boolean, :default => false
   field :late, :type => Boolean, :default => false
-end
-
-class ScheduledChat
-  include Mongoid::Document
-  embedded_in :user
-
-  field :host_id, :type => Integer
-  field :requestee_id, :type => Integer
-  field :start_time, :type => Time
-  field :end_time, :type => Time
 end
 
 # Embeds one area

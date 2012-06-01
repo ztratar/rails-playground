@@ -1,6 +1,7 @@
 class Chat
   include Mongoid::Document
   belongs_to :request
+  belongs_to :user
 
   embeds_many :message
 
